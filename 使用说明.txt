@@ -13,3 +13,5 @@ OpenWMSÊÇ¼¯¿Í¿Æ¼¼¿ª·¢µÄ»ùÓÚwifidogÐ­ÒéµÄÈÏÖ¤ÓªÏúÆ½Ì¨¡£²ÉÓÃ¿ªÔ´GPLÐí¿ÉÖ¤£¬ÈÎºÎ¸öÈ
 3.Èç¹ûÄúÔÚ°²×°»òÕß¿ª·¢ÖÐÓöµ½ÎÊÌâ£¬ÇëÇ°Íù¼¯¿Í¹Ù·½ÂÛÌ³ÇóÖú£¬ÎÒÃÇ»áÔÚµÚÒ»Ê±¼ä¸øÄúÏìÓ¦£¬ÂÛÌ³µØÖ·£ºbbs.cnrouter.com
 
 4.ºóÐøÎÒÃÇ»áÉÏ´«¶þ´Î¿ª·¢°ïÖúÎÄµµ£¬¹©°®ºÃÕß²éÔÄ¡£
+
+5.Êý¾Ý¿âÅäÖÃÎÄ¼þµØÖ·Îª£ºsrc/Common/Conf/db.config
