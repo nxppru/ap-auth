@@ -15,3 +15,7 @@ OpenWMSÊÇ¼¯¿Í¿Æ¼¼¿ª·¢µÄ»ùÓÚwifidogÐ­ÒéµÄÈÏÖ¤ÓªÏúÆ½Ì¨¡£²ÉÓÃ¿ªÔ´GPLÐí¿ÉÖ¤£¬ÈÎºÎ¸öÈ
 4.ºóÐøÎÒÃÇ»áÉÏ´«¶þ´Î¿ª·¢°ïÖúÎÄµµ£¬¹©°®ºÃÕß²éÔÄ¡£
 
 5.Êý¾Ý¿âÅäÖÃÎÄ¼þµØÖ·Îª£ºsrc/Common/Conf/db.config
+
+6.ºóÌ¨µØÖ·ÊÇhttp://host/admin
+ÓÃ»§£ºadmin
+ÃÜÂë£º123456
