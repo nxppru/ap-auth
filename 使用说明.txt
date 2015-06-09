@@ -6,7 +6,7 @@ OpenWMSÊÇ¼¯¿Í¿Æ¼¼¿ª·¢µÄ»ùÓÚwifidogĞ­ÒéµÄÈÏÖ¤ÓªÏúÆ½Ì¨¡£²ÉÓÃ¿ªÔ´GPLĞí¿ÉÖ¤£¬ÈÎºÎ¸öÈ
 1.±¾³ÌĞòÊ¹ÓÃÁËredis·şÎñÀ´´æ´¢²¿·ÖÊµÊ±Êı¾İ£¬Ê¹ÓÃ±¾³ÌĞòĞèÒª°²×°redis·şÎñ£¨ÎŞĞè°²×°php¶ÔÓ¦µÄredisÀ©Õ¹£¬±¾³ÌĞòÊ¹ÓÃpredis×÷Îª¿Í»§¶Ë£©¡£
 	redis·şÎñ¶ËÏÂÔØµØÖ·£º
 		linux£ºwget http://redis.googlecode.com/files/redis-2.6.13.tar.gz
-		windows£ºhttps://github.com/ServiceStack/redis-windows
+		windows£ºhttps://github.com/dmajkic/redis/downloads
 		
 2.±¾³ÌĞòÊ¹ÓÃµÄÊÇthinkphp¿ò¼Ü¿ª·¢£¬ÓÃµ½ÁËÎ±¾²Ì¬£¬apacheĞèÒª¿ªÆôrewrite
 
