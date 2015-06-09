@@ -74,34 +74,5 @@ class AuthTypeSigninLogModel extends Model{
     	return $list;
     }
     
-    /**
-     +----------------------------------------------------------
-     * 统计代理商下用户认证方式
-     +----------------------------------------------------------
-     * @access public
-     +----------------------------------------------------------
-     * @return array
-     +----------------------------------------------------------
-    */
-    public function chart_auth_type_for_agency($param){
-    	
-    	//获取代理商下面的商户
-    	$merchant = DD('Merchant');
-    	$merchant_list = $merchant->get_merchant_by_parent_uid(session('adminid'));
-    	if (!$merchant_list){
-    		return false;
-    	}
-    	$mid = array();
-    	foreach ($merchant_list as $key => $value) {
-    		$mid[] = $value['mid'];
-    	}
-    	$where = array('mid'=>array('IN', implode(',', $mid)));
-    	if (!empty($param['time_start']) && !empty($param['time_end'])){
-    		$where['date'] = array('between', $param['time_start'].','.$param['time_end']);
-    	}
-    	$list = $this->handler->field('sum(akey_verify) as akey_verify, sum(mobile) as mobile,sum(virtualmobile) as virtualmobile,sum(qq) as qq,sum(weixin_verify) as weixin_verify,sum(weibo) as weibo')->where($where)->find();
-    
-
-    	return $list;
-    }
+   
 }

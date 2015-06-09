@@ -283,35 +283,7 @@ class MerchantModel extends Model{
 			return false;
 		}
 	}
-	/**
-	 +----------------------------------------------------------
-	 * 重置密码
-	 +----------------------------------------------------------
-	 * @access public
-	 +----------------------------------------------------------
-	 * @param $id
-	 +----------------------------------------------------------
-	 * @return array
-	 +----------------------------------------------------------
-	*/
-	public function update_password($id, $password){
-		//检查该商户是否存在
-		$list = $this->get_merchant_by_id($id);
-		if (!is_array($list)){
-			throw new Exception("该商户不存在", 1);
-		}
-		//如果该管理员是代理商，判断该商户是否属于该代理商
-		$group_id = session('group_id');
-		if ($group_id == 2 && $list['parent_uid'] != session('adminid')){
-			throw new Exception("该商户不在您的名下，您不能重置密码", 1);
-		}
-		$admin = D('Admin');
-		$rs = $admin->update_password($id, $password);
-		if ($rs === false){
-			throw new Exception("重置密码失败，请重试", 1);
-		}
-		return true;
-	}
+	
 	/**
 	 +----------------------------------------------------------
 	 * 上传图片

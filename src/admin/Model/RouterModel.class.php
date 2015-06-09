@@ -199,129 +199,7 @@ class RouterModel extends Model{
 			return false;
 		}
 	}
- 	/**
-	 +----------------------------------------------------------
-	 * 根据商家编号及路由编号获取路由信息
-	 +----------------------------------------------------------
-	 * @access public
-	 +----------------------------------------------------------
-	 * @param $id 商家编号
-	 +----------------------------------------------------------
-	 * @return array
-	 +----------------------------------------------------------
-	*/
- 	public function get_router_info_id_userid($id, $user_id){
-		//路由状态 离线 未连接  在线
-		$router_info1 =  $this->handler->where(array('user_id'=>$user_id, 'id'=>$id))->find();
-		if (!$router_info1){
-			throw new Exception("路由不存在", 1);
-		}
-		return $this->get_router_info_by_id($id);
- 	}
- 	public function get_router_info_by_id($id){
- 		$router_info1 =  $this->handler->where(array('id'=>$id))->find();
-		if (!$router_info1){
-			throw new Exception("路由不存在", 1);
-		}
- 		$clent = DD('Client');
-		$router_info1['mid'] = strtolower($router_info1['mid']);
-		//查看是否有路由连接上来
-
-		$key = $this->redis_prefix.strtolower($router_info1['router_mac']);
-		$key1 = 'not_router:'.strtolower($router_info1['router_mac']);
-		
-		//如果当前路由存在于未知路由列表中，则从未知列表中移除
-		if ($this->cache->exists($key1) == 1){
-			if ($this->cache->exists($key) == 0){
-				$not_router_info = $this->get_notrouter_info(strtolower($router_info1['router_mac']));
-				$this->set_redis_for_router_info($key, $not_router_info);
-			}
-			$this->cache->rm($key1);
-		}
-
-		$router_info = $this->get_router_info(strtolower($router_info1['router_mac']));
-	
-		if (!$router_info){
-			$router_info1['status'] = '-1';//未连接
-		}else{
-			if ($router_info['status'] != '3'){
-				if(time() - $router_info['online_time'] > ($router_info['check_time'])+120){
-					$router_info1['status'] = '-1';//未连接
-				}else{
-					$router_info1['status'] = '1';//在线
-				}
-			}else{
-				$router_info1['status'] = '3';
-			}
-			
-			//删除超时的在线用户
-			$clent->del_timeout_user($router_info1['mid'], $router_info1['router_mac'], $router_info['check_time']);
-			//获取认证在线用户数量
-			$online_user_list = $clent->get_online_user_list();
-
-			$router_info1['sys_uptime'] 		= $router_info['sys_uptime'];
-			$router_info1['sys_memfree'] 		= $router_info['sys_memfree'];
-			$router_info1['sys_load'] 			= $router_info['sys_load'];
-			$router_info1['wifidog_uptime']		= $router_info['wifidog_uptime'];
-			$router_info1['check_time'] 		= $router_info['check_time'].'秒';
-			$router_info1['clientcount'] 		= $router_info['clientcount'];
-			$router_info1['router_address'] 	= $router_info['router_address'];
-			$router_info1['router_type'] 		= $router_info['router_type'];
-			$router_info1['wan_ip'] 			= $router_info['wan_ip'];
-			$router_info1['sv'] 				= $router_info['sv'];
-
-			if ($router_info1['status'] == '1'){
-				$router_info1['online_time'] 		= time() - $router_info['start_time'];
-			}else if($router_info1['status'] != '3'){
-				$router_info1['online_time'] 		= 0;
-			}
-			
-			$router_info1['last_online_time']	= date('Y-m-d H:i:s', $router_info['online_time']);
-			$router_info1['start_time']			= date('Y-m-d H:i:s', $router_info['start_time']);
-			$router_info1['online_user_count'] 	= count($online_user_list);
-		}
-		//统计该路由历史用户总数
-		$signinlog = DD('UserSigninLog');
-		//历史最高在线人数
-		$max_log = $signinlog->get_signlog_for_max_by_routermac($router_info1['router_mac'], $router_info1['mid']);
-		//return array('login_total'=>$info['login_total'], 'date':$info['date']);
-		$router_info1['max_login'] = $max_log;
-		//最近10天的认证数流量图
-		$log_list_top10 = $signinlog->get_signlog_for_top10_by_routermac($router_info1['router_mac'], $router_info1['mid']);
-
-		$today = date('Y-m-d');
-		$yesterday = date('Y-m-d' , strtotime('-1 day')); 
-		//定义最近10天的数组
-		$temp_array = array(
-			date('Y-m-d' , strtotime('-9 day')),
-			date('Y-m-d' , strtotime('-8 day')),
-			date('Y-m-d' , strtotime('-7 day')),
-			date('Y-m-d' , strtotime('-6 day')),
-			date('Y-m-d' , strtotime('-5 day')),
-			date('Y-m-d' , strtotime('-4 day')),
-			date('Y-m-d' , strtotime('-3 day')),
-			date('Y-m-d' , strtotime('-2 day')),
-			$yesterday, 
-			$today, 
-		);
-		$temp = array();
-		foreach ($log_list_top10 as $key => $value) {
-			$temp[$value['date']] = $value;
-		}
-		$router_info1['today'] = intval($temp[$today]['user_total']);
-		$router_info1['yesterday'] = intval($temp[$yesterday]['user_total']);
-		$top10 = array();
-		foreach ($temp_array as $key => $value) {
-			$top10[] = array('date'=>$value, 'login_total'=>intval($temp[$value]['user_total']));
-		}
-		$router_info1['top10'] = $top10;
-		
-		//累计认证人数
-		$sum_log = $signinlog->get_signlog_for_sum_by_routermac($router_info1['router_mac'], $router_info1['mid']);
-		$router_info1['sum_login'] = $sum_log;
-		return $router_info1;
- 	}
- 
+ 	
  	/**
 	 +----------------------------------------------------------
 	 * 根据商家编号获取路由列表--详细信息
@@ -377,74 +255,6 @@ class RouterModel extends Model{
 	}
 	
 	
-	/**
-	 +----------------------------------------------------------
-	 * 路由逻辑处理
-	 +----------------------------------------------------------
-	 * @access public
-	 +----------------------------------------------------------
-	 * @param $param
-	 +----------------------------------------------------------
-	 * @return array
-	 +----------------------------------------------------------
-	*/
-	private function ext_router_list($router_list){
-		$clent = DD('Client');
-		$RouterWifiConfig = DD('RouterWifiConfig');
-		//查看是否有路由连接上来
-		foreach ($router_list as $key => &$value) {
-			$key = $this->redis_prefix.strtolower($value['router_mac']);
-			$key1 = 'not_router:'.strtolower($value['router_mac']);
-			if ($this->cache->exists($key1) == 1){				
-				if ($this->cache->exists($key) == 0){
-					$not_router_info = $this->get_notrouter_info(strtolower($value['router_mac']));
-					$this->set_redis_for_router_info($key, $not_router_info);
-				}
-				$this->cache->rm($key1);
-			}
-
-			$router_info = $this->get_router_info(strtolower($value['router_mac']));
-			if (!$router_info){
-				$value['status'] = '-1';//未连接
-			}else{
-	
-				if ($router_info['status'] != '3'){
-					if(time() - $router_info['online_time'] > ($router_info['check_time'])+120){
-						$value['status'] = '-1';//未连接
-					}else{
-						$value['status'] = '1';//在线
-					}
-				}else{
-					$value['status'] = 3;
-				}
-				
-				//删除超时的在线用户
-				$clent->del_timeout_user($value['mid'], $value['router_mac'], $router_info['check_time']);
-				//获取认证在线用户数量
-				$online_user_list = $clent->get_online_user_list();
-				
-				$value['ssid']				= $RouterWifiConfig->get_wifidog_onef($value['router_mac'], $value['mid'], 'ssid');
-				
-				
-				$value['sys_uptime'] 		= $router_info['sys_uptime'];
-				$value['sys_memfree'] 		= $router_info['sys_memfree'];
-				$value['sys_load'] 			= $router_info['sys_load'];
-				$value['wifidog_uptime']	= $router_info['wifidog_uptime'];
-				$value['check_time'] 		= $router_info['check_time'].'秒';
-				$value['clientcount'] 		= $router_info['clientcount'];
-				$value['router_address'] 	= $router_info['router_address'];
-				$value['router_type'] 		= $router_info['router_type'];
-				$value['wan_ip'] 			= $router_info['wan_ip'];
-				$value['sv'] 				= $router_info['sv'];
-				$value['online_time'] 		= $value['status'] != -1 ? time() - $router_info['start_time'] : 0;
-				$value['last_online_time']	= date('Y-m-d H:i:s', $router_info['online_time']);
-				$value['start_time']		= date('Y-m-d H:i:s', $router_info['start_time']);
-				$value['online_user_count'] = count($online_user_list);
-			}
-		}
-		return $router_list;
-	}
-	
 	
 	/**
 	 +----------------------------------------------------------
@@ -458,23 +268,7 @@ class RouterModel extends Model{
 	 +----------------------------------------------------------
 	*/
 	public function upgrade($id){
-		if (intval($id)==0){
-			throw new Exception("路由不存在", 1);
-		}
-		$user_id = session('adminid');
-		//判断编辑的路由是否所属于该商家
-		$router_info1 = $this->handler->where(array('user_id'=>$user_id, 'id'=>$id))->find();
-		if (!$router_info1){
-			throw new Exception("路由不存在", 1);
-		}
-
-		$router_info1['mid'] = strtolower($router_info1['mid']);
-		$router_info1['router_mac'] = strtolower($router_info1['router_mac']);
-		$key = $this->redis_prefix.strtolower($router_info1['router_mac']);
 		
-		
-		$router_info = $this->get_router_info($router_info1['router_mac'], array('online_time', 'check_time', 'sv'));
-
 		if(!$router_info || time() - $router_info['online_time'] > ($router_info['check_time'])+120){
 			throw new Exception("路由不是在线状态，无法升级", 1);
 		}
@@ -528,24 +322,7 @@ class RouterModel extends Model{
 	 +----------------------------------------------------------
 	*/
 	public function reboot($id){
-		if (intval($id)==0){
-			throw new Exception("路由不存在", 1);
-		}
-		$user_id = session('adminid');
-		//判断编辑的路由是否所属于该商家
-		$router_info1 = $this->handler->where(array('user_id'=>$user_id, 'id'=>$id))->find();
-		if (!$router_info1){
-			throw new Exception("路由不存在", 1);
-		}
-		$router_info1['mid'] = strtolower($router_info1['mid']);
-		$router_info1['router_mac'] = strtolower($router_info1['router_mac']);
-		$key = $this->redis_prefix.strtolower($router_info1['router_mac']);
 		
-		$router_info = $this->get_router_info($router_info1['router_mac'], array('online_time', 'check_time'));
-
-		if(!$router_info || time() - $router_info['online_time'] > ($router_info['check_time'])+120){
-			throw new Exception("路由不是在线状态，无法重启", 1);
-		}
 		//创建升级任务
 		
 		$param = array(
@@ -563,93 +340,7 @@ class RouterModel extends Model{
 		
 		return '已下发重启任务，路由将在'.$router_info['check_time'].'秒左右执行任务';
 	}
-	/**
-	 +----------------------------------------------------------
-	 * 获取路由在线用户
-	 +----------------------------------------------------------
-	 * @access public
-	 +----------------------------------------------------------
-	 * @param $param
-	 +----------------------------------------------------------
-	 * @return array
-	 +----------------------------------------------------------
-	*/
-	public function get_online_user_for_router($router_id, $user_id){
-
-		if (intval($router_id) == 0 || intval($user_id) == 0){
-			throw new Exception("路由不存在", 1);
-		}
-		//判断编辑的路由是否所属于该商家
-		$router_info1 = $this->handler->where(array('user_id'=>$user_id, 'id'=>$router_id))->find();
-		if (!$router_info1){
-			throw new Exception("路由不存在", 1);
-		}
-		
-		return $this->get_online_user_for_router1($router_id);
-	}
-	public function get_online_user_for_router1($router_id){
-
-		
-		//判断编辑的路由是否所属于该商家
-		$router_info1 = $this->handler->where(array('id'=>$router_id))->find();
-		if (!$router_info1){
-			throw new Exception("路由不存在", 1);
-		}
-		$router_info1['mid'] = strtolower($router_info1['mid']);
-		$router_info1['router_mac'] = strtolower($router_info1['router_mac']);
-		$key = $this->redis_prefix.strtolower($router_info1['router_mac']);
-		
-		$router_info = $this->get_router_info($router_info1['router_mac'], array('online_time', 'check_time'));
-
-		if(!$router_info || time() - $router_info['online_time'] > ($router_info['check_time'])+120){
-			throw new Exception("路由不是在线状态", 1);
-		}
-		$client = DD('Client');
-		//清除超时用户
-		$client->del_timeout_user($router_info1['mid'], $router_info1['router_mac'], $router_info['check_time']);
-		//获取在线用户mac
-		$online_user_mac_list = $client->get_online_user_list();
-		$online_user_list = array();
-		//获取userid及full_signin_log_id
-		$third_id = '';
-		$full_signin_log_id = array();
-		foreach ($online_user_mac_list as $k => $val) {
-			$temp = $client->get_user_info($router_info1['mid'], $router_info1['router_mac'], $val[0], array('full_signin_log_id', 'third_id', 'start_date_time', 'mac', 'username', 'auth_type', 'incoming', 'outgoing'));
-			$online_user_list[] = $temp;
-			$full_signin_log_id[] = $temp['full_signin_log_id'];
-			$third_id .= $temp['third_id'] . ",";
-		}
-		$third_id = rtrim($third_id, ',');
 	
-		//获取用户数据
-		$client_list = $client->get_user_list_by_thirdid($router_info1['mid'], $router_info1['router_mac'], $third_id);
-		$new_client_list = array();
-		foreach ($client_list as $k => $v) {
-
-			$new_client_list[$v['third_id']] = $v;
-		}
-		//print_r($new_client_list);
-		//获取当前登录日志数据
-		$full_signin_log = DD('FullSigninLog');
-		$full_signin_log_list = $full_signin_log->get_fullsigninlog_list_by_id($router_info1['mid'], implode(',', $full_signin_log_id));
-		$new_full_signin_log_list = array();
-		foreach ($full_signin_log_list as $k => $val) {
-			$new_full_signin_log_list[$val['id']] = $val;
-		}
-		//组合数据
-		foreach ($online_user_list as $k => &$val) {
-			$val['times'] = $new_client_list[$val['third_id']]['times'];
-			$val['device_type'] = $new_client_list[$val['third_id']]['device_type'];
-			$val['devices_cj'] = $new_client_list[$val['third_id']]['devices_cj'];
-			$val['src_url'] = $new_full_signin_log_list[$val['full_signin_log_id']]['src_url'];
-			$val['online_time'] = time() - $val['start_date_time'];
-			$val['start_date_time'] = date('Y-m-d H:i:s', $val['start_date_time']);
-			$val['router_id'] = $router_id;
-			$val['router_name'] = $router_info1['router_name'];
-			$val['user_id1'] = $router_info1['user_id'];
-		}
-		return $online_user_list;
-	}
 	/**
 	 +----------------------------------------------------------
 	 * 将用户踢下线
@@ -661,122 +352,28 @@ class RouterModel extends Model{
 	 * @return array
 	 +----------------------------------------------------------
 	*/
-	public function tick($router_id, $user_id, $mac){
-		if (intval($router_id) == 0 || intval($user_id) == 0 || empty($mac)){
+	public function tick($mac){
+		if (empty($mac)){
 			throw new Exception("用户不存在", 1);
 		}
-		//判断编辑的路由是否所属于该商家
-		$router_info1 = $this->handler->where(array('user_id'=>$user_id, 'id'=>$router_id))->find();
-		if (!$router_info1){
-			throw new Exception("路由不存在", 1);
-		}
-		$router_info1['mid'] = strtolower($router_info1['mid']);
-		$router_info1['router_mac'] = strtolower($router_info1['router_mac']);
-		$key = $this->redis_prefix.strtolower($router_info1['router_mac']);
+		$router_mac = strtolower(C('router_mac'));
 		
-		$router_info = $this->get_router_info($router_info1['router_mac'], array('online_time', 'check_time'));
+		$key = $this->redis_prefix.$router_mac;
+		
+		$router_info = $this->get_router_info($router_mac, array('online_time', 'check_time'));
 
 		if(!$router_info || time() - $router_info['online_time'] > ($router_info['check_time'])+120){
 			throw new Exception("路由不是在线状态", 1);
 		}
 		//踢用户下线
 		$client = DD('Client');
-		$rs = $client->kick($router_info1['mid'], $router_info1['router_mac'], $mac);
+		$rs = $client->kick($mac);
 		
 		if (!$rs){
 			throw new Exception("操作失败，请重试", 1);
 		}
 		return true;
 	}
-	/**
-	 +----------------------------------------------------------
-	 * 获取该路由下面的历史用户列表
-	 +----------------------------------------------------------
-	 * @access public
-	 +----------------------------------------------------------
-	 * @param $param
-	 +----------------------------------------------------------
-	 * @return array
-	 +----------------------------------------------------------
-	*/
-	public function get_user_list_for_router($router_id, $user_id, $pagenum, $pagelen, $sortkey, $reverse, $where){
-		if (intval($router_id) == 0 || intval($user_id) == 0){
-			throw new Exception("路由不存在", 1);
-		}
-		//判断编辑的路由是否所属于该商家
-		$router_info1 = $this->handler->where(array('user_id'=>$user_id, 'id'=>$router_id))->find();
-		if (!$router_info1){
-			throw new Exception("路由不存在", 1);
-		}
-		
-		return $this->get_user_list_for_router1($router_id, $pagenum, $pagelen, $sortkey, $reverse, $where);
-	}
-	/**
-	 +----------------------------------------------------------
-	 * 获取该路由下面的历史用户列表
-	 +----------------------------------------------------------
-	 * @access public
-	 +----------------------------------------------------------
-	 * @param $param
-	 +----------------------------------------------------------
-	 * @return array
-	 +----------------------------------------------------------
-	*/
-	public function get_user_list_for_router1($router_id, $pagenum, $pagelen, $sortkey, $reverse, $where){
-		
-		//判断编辑的路由是否所属于该商家
-		$router_info1 = $this->handler->where(array('id'=>$router_id))->find();
-		if (!$router_info1){
-			throw new Exception("路由不存在", 1);
-		}
-		//获取历史用户列表
-		$client = DD('Client');
-		$user_list = $client->get_user_list_by_midroutermac($router_info1['mid'], $router_info1['router_mac'], $pagenum, $pagelen, $sortkey, $reverse, $where);
-		foreach ($user_list['list'] as $key => &$value) {
-			$value['router_name'] = $router_info1['router_name'];
-			$value['user_id1'] = $router_info1['user_id'];
-		}
-		
-		return $user_list;
-	}
-	/**
-	 +----------------------------------------------------------
-	 * 获取该路由下面的历史用户列表
-	 +----------------------------------------------------------
-	 * @access public
-	 +----------------------------------------------------------
-	 * @param $param
-	 +----------------------------------------------------------
-	 * @return array
-	 +----------------------------------------------------------
-	*/
-	public function del_router($router_id, $user_id){
-		if (intval($router_id) == 0 || intval($user_id) == 0){
-			throw new Exception("路由不存在", 1);
-		}
-		//判断编辑的路由是否所属于该商家
-		$router_info1 = $this->handler->where(array('user_id'=>$user_id, 'id'=>$router_id))->find();
-		if (!$router_info1){
-			throw new Exception("路由不存在", 1);
-		}
-		$router_info1['mid'] = strtolower($router_info1['mid']);
-		$router_info1['router_mac'] = strtolower($router_info1['router_mac']);
-		//路由配置
-		$router_wifi_config = DD('RouterWifiConfig');
-		$rs1 = $router_wifi_config->del_wifi_config($router_id, $router_info1['router_mac'], $router_info1['mid']);
-		if (!$rs1){
-			throw new Exception("删除路由配置信息失败，请重试", 1);
-			return false;
-		}
-		//删除路由
-		$rs = $this->handler->where(array('id'=>$router_id))->delete();
-		if (!$rs){
-			throw new Exception("删除失败，请重试", 1);
-			return false;
-		}
-		//删除缓存
-		$key = $this->redis_prefix.strtolower($router_info1['router_mac']);
-		$this->cache->rm($key);
-		return true;
-	}
+	
+	
 }

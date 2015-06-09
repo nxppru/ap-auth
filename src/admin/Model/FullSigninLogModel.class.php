@@ -77,16 +77,7 @@ class FullSigninLogModel extends Model{
           }
           $mid = strtolower($mid);
           $mid = trim($mid);
-         /* //通过热点账号获取商家对应表
-          $tp = $this->handler->tablePrefix;
-          $Model = new Model();
-          $DB_NAME = C('DB_NAME');
-          $table_info = $Model->query("SHOW TABLES WHERE Tables_in_{$DB_NAME}='{$tp}fullsigninlog_".$mid."'");
-          if (count($table_info) == 1){
-               $this->handler = M('fullsigninlog_'.$mid);
-          }else{
-               Log::record('fullsigninlog商家对应登录日志表不存在，热点账号：'.$mid);
-          }*/
+
           $rs = $this->handler->where(array('id'=>$id, 'mid'=>$mid))->save(array('online_time'=>$time));
           if ($rs === false){
                Log::record('更新在线时长失败，SQL：'.$this->handler->getLastSql());
@@ -111,18 +102,7 @@ class FullSigninLogModel extends Model{
                Log::record('fullsigninlog更新用户流量失败，商家热点账号为空');
                return false;
           }
-         /* $mid = strtolower($mid);
-          $mid = trim($mid);
-          //通过热点账号获取商家对应表
-          $tp = $this->handler->tablePrefix;
-          $Model = new Model();
-          $DB_NAME = C('DB_NAME');
-          $table_info = $Model->query("SHOW TABLES WHERE Tables_in_{$DB_NAME}='{$tp}fullsigninlog_".$mid."'");
-          if (count($table_info) == 1){
-               $this->handler = M('fullsigninlog_'.$mid);
-          }else{
-               Log::record('fullsigninlog商家对应登录日志表不存在，热点账号：'.$mid);
-          }*/
+
           $rs = $this->handler->where(array('id'=>$id, 'mid'=>$mid))->setInc($f, $num);
           if ($rs === false){
             Log::record('fullsigninlog更新用户流量失败，SQL：'.$this->handler->getLastSql());

@@ -50,57 +50,6 @@ class SigninLogModel extends Model{
           }
  		
  	}
-     /**
-     +----------------------------------------------------------
-     * 通过路由mac及商家编号获取最高认证数及日期
-     +----------------------------------------------------------
-     * @access public
-     +----------------------------------------------------------
-     * @param $param a
-     +----------------------------------------------------------
-     * @return array
-     +----------------------------------------------------------
-    */
-     public function get_signlog_for_max_by_routermac($router_mac, $mid){
-          $num = $this->handler->where(array('mid'=>$mid, 'router_mac'=>$router_mac))->max('login_total');
-          if (!$num){
-               return array('login_total'=>0, 'date'=>date('Y-m-d'));
-          }
-          $info = $this->handler->where(array('mid'=>$mid, 'router_mac'=>$router_mac, 'login_total'=>$num))->order('date desc')->find();
-          return array('login_total'=>$info['login_total'], 'date'=>$info['date']);
-
-     }
-     /**
-     +----------------------------------------------------------
-     * 通过路由mac及商家编号获取最近10天的认证数及日期
-     +----------------------------------------------------------
-     * @access public
-     +----------------------------------------------------------
-     * @param $param a
-     +----------------------------------------------------------
-     * @return array
-     +----------------------------------------------------------
-    */
-     public function get_signlog_for_top10_by_routermac($router_mac, $mid){
-          return  $this->handler->where(array('mid'=>$mid, 'router_mac'=>$router_mac))->limit('0, 10')->order('date desc')->select();
-     }
     
-     /**
-     +----------------------------------------------------------
-     * 通过路由mac及商家编号获取累计认证人数
-     +----------------------------------------------------------
-     * @access public
-     +----------------------------------------------------------
-     * @param $param a
-     +----------------------------------------------------------
-     * @return array
-     +----------------------------------------------------------
-    */
-    public function get_signlog_for_sum_by_routermac($router_mac, $mid){
-        $sum = $this->handler->where(array('mid'=>$mid, 'router_mac'=>$router_mac))->sum('login_total');;
-        if (!$sum){
-            return 0;
-        }
-        return $sum;
-    }
+    
 }

@@ -37,7 +37,7 @@ class AdminModel extends Model{
  		//截取5位字符串加密验证
  		$password = substr($password, 5, 5);
 
- 		$user_info = $this->handler->field('id, username, parent_uid, group_id')->where(array('group_id'=>3, 'activated'=>1, 'username'=>$username, 'password'=>md5($password)))->find();
+ 		$user_info = $this->handler->field('id, username, parent_uid, group_id')->where(array('username'=>$username, 'password'=>md5($password)))->find();
  		if (!is_array($user_info)){
  			throw new Exception('抱歉，用户名或密码错误，请重试!');
  		}
@@ -79,21 +79,7 @@ class AdminModel extends Model{
  		}
  		return true;
  	}
- 	/**
-	 +----------------------------------------------------------
-	 * 根据代理商编号获取商户列表
-	 +----------------------------------------------------------
-	 * @access public
-	 +----------------------------------------------------------
-	 * @param $username 用户名
-	 * @param $password 密码
-	 +----------------------------------------------------------
-	 * @return array
-	 +----------------------------------------------------------
-	*/
-	public function get_merchant_list_by_angencyid($angencyid){
-		return $this->handler->where(array('parent_uid'=>$angencyid))->select();
-	}
+ 	
  	/**
 	 +----------------------------------------------------------
 	 * 根据组编号获取功能菜单
@@ -143,37 +129,7 @@ class AdminModel extends Model{
 		session(null);
 		return true;
 	}
-	/**
-	 +----------------------------------------------------------
-	 * 添加账号
-	 +----------------------------------------------------------
-	 * @access public
-	 +----------------------------------------------------------
-	 * @return bool
-	 +----------------------------------------------------------
-	*/
-	public function add_admin($param){
-		if (empty($param['username']) || strlen($param['username']) < 2 || strlen($param['username'])>20){
-			throw new Exception("账号不能为空，或者长度不在范围之内[2-20]", 1);
-		}
-		if (empty($param['password'])){
-			throw new Exception("密码不能为空", 1);
-		}
-		$admin_info = $this->get_admin_by_id($param['username']);
-		if (is_array($admin_info)){
-			throw new Exception("该账号已存在", 1);
-		}
-		$password = substr($param['password'], 5, 5);
-		$rs = $this->handler->add(array(
-			'username'	=> $param['username'],
-			'password'	=> md5($password),
-			'activated'	=> intval($param['disable']),
-			'parent_uid'=> $param['parent_uid'],
-			'group_id'	=> $param['group_id'],
-			'created_at'=> date('Y-m-d H:i:s'),
-		));
-		return $rs;
-	}
+	
 	/**
 	 +----------------------------------------------------------
 	 * 修改密码
@@ -202,39 +158,7 @@ class AdminModel extends Model{
  		}
  		return true;
 	}
-	/**
-	 +----------------------------------------------------------
-	 * 修改账号状态
-	 +----------------------------------------------------------
-	 * @access public
-	 +----------------------------------------------------------
-	 * @return bool
-	 +----------------------------------------------------------
-	*/
-	public function edit_admin($param){
-		if (intval($param['id']) == 0){
-			throw new Exception("用户编号不存在", 1);
-		}
-		$password = substr($param['password'], 5, 5);
-		$rs = $this->handler->where(array('id'=>$param['id']))->save(array(
-			'activated'	=> intval($param['disable']),
-		));
-
-		return $rs;
-	}
-	/**
-	 +----------------------------------------------------------
-	 * 删除账号
-	 +----------------------------------------------------------
-	 * @access public
-	 +----------------------------------------------------------
-	 * @return bool
-	 +----------------------------------------------------------
-	*/
-	public function del_admin($id){
-		$rs = $this->handler->where(array('id'=>array('IN', $id)))->delete();
-		return $rs;
-	}
+	
 	/**
 	 +----------------------------------------------------------
 	 * 检查用户是否存在

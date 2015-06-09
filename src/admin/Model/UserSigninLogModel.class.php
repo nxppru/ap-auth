@@ -41,72 +41,7 @@ class UserSigninLogModel extends Model{
           }
  		
  	}
-     /**
-     +----------------------------------------------------------
-     * 通过路由mac及商家编号获取最高认证数及日期
-     +----------------------------------------------------------
-     * @access public
-     +----------------------------------------------------------
-     * @param $param a
-     +----------------------------------------------------------
-     * @return array
-     +----------------------------------------------------------
-    */
-     public function get_signlog_for_max_by_routermac($router_mac, $mid){
-          $num = $this->handler->where(array('mid'=>$mid, 'router_mac'=>$router_mac))->max('user_total');
-          if (!$num){
-               return array('user_total'=>0, 'date'=>date('Y-m-d'));
-          }
-          $info = $this->handler->where(array('mid'=>$mid, 'router_mac'=>$router_mac, 'user_total'=>$num))->order('date desc')->find();
-          return array('user_total'=>$info['user_total'], 'date'=>$info['date']);
-
-     }
-     /**
-     +----------------------------------------------------------
-     * 通过路由mac及商家编号获取最近10天的认证数及日期
-     +----------------------------------------------------------
-     * @access public
-     +----------------------------------------------------------
-     * @param $param a
-     +----------------------------------------------------------
-     * @return array
-     +----------------------------------------------------------
-    */
-     public function get_signlog_for_top10_by_routermac($router_mac, $mid){
-          return  $this->handler->where(array('mid'=>$mid, 'router_mac'=>$router_mac))->limit('0, 10')->order('date desc')->select();
-     }
-     /**
-     +----------------------------------------------------------
-     * 通过路由mac及商家编号获取累计认证人数
-     +----------------------------------------------------------
-     * @access public
-     +----------------------------------------------------------
-     * @param $param a
-     +----------------------------------------------------------
-     * @return array
-     +----------------------------------------------------------
-    */
-     public function get_signlog_for_sum_by_routermac($router_mac, $mid){
-          $sum = $this->handler->where(array('mid'=>$mid, 'router_mac'=>$router_mac))->sum('user_total');
-          if (!$sum){
-               return 0;
-          }
-          return $sum;
-     }
-     /**
-     +----------------------------------------------------------
-     * 通过商家编号获取最近10天的认证数及日期
-     +----------------------------------------------------------
-     * @access public
-     +----------------------------------------------------------
-     * @param $param a
-     +----------------------------------------------------------
-     * @return array
-     +----------------------------------------------------------
-    */
-     public function get_signlog_for_top10_by_mid($mid){
-          return  $this->handler->limit('0, 10')->order('date desc')->select();
-     }
+     
     /**
      +----------------------------------------------------------
      * 获取最近10天的认证数及日期

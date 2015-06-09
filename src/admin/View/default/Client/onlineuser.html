@@ -19,7 +19,7 @@
 					'button_width'	=>'15%',
 					'button' 	=> array(
 						0	=> array('class'=>'blue', 'icon'=>'search', 'name'=>'user_info', 'title'=>'用户详情', 'field'=>array('mac')),
-						1	=> array('class'=>'red', 'icon'=>'remove', 'name'=>'tick', 'title'=>'踢下线', 'field'=>array('mac', 'router_id'))
+						1	=> array('class'=>'red', 'icon'=>'remove', 'name'=>'tick', 'title'=>'踢下线', 'field'=>array('mac'))
 					),
 				) ,'User'
 			)}
@@ -49,26 +49,20 @@
 		});
 
 		$("a[name='tick']").click(function(){
-			var field = $(this).attr('value');
-			if (field == ''){
+			var mac = $(this).attr('value');
+			if (mac == ''){
 				$("#alert_box_table").jk_alert({msg: '没有获取到要删除的数据，请刷新后重试', type:'danger', show_time:12000});
 				return false;
 			}
 	
-			field = field.split('__');
-			var mac = field[0];
-			var router_id = field[1];
-			if (mac == '' || router_id == ''){
-				$("#alert_box_table").jk_alert({msg: '没有获取到要删除的数据，请刷新后重试', type:'danger', show_time:12000});
-				return false;
-			}
+		
 			showdialog({
 				'title':'提示',
 				'message':'您确定要将该用户踢下线吗？',
 				'okfunction':function(){
 					$.ajax({ 
 			            url: "{:U('Client/tick')}",  
-			            data:{'mac': mac, 'router_id':router_id},
+			            data:{'mac': mac},
 			            dataType:'json',
 			            type:'POST',
 			            success: function(data){

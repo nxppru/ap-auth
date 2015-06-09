@@ -166,9 +166,7 @@ class MembersModel extends Model{
      +----------------------------------------------------------
     */
     public function chart_auth_type_agency($param){
-    	//$url = 'https://www.baidu.com?ie=utf-8&f=8&rsv_bp=1&rsv_idx=1&tn=baidu&wd=php%20%E5%88%86%E8%A7%A3url&rsv_pq=a9353103000249e1&rsv_t=e6293MF8eu1%2BKNjPlgLyBs7Jefqeu2mQepdlg%2BkG%2Fk8oc5PuKj4G%2FqumUx8&rsv_enter=1&oq=php%20%24_&inputT=2932&rsv_sug1=15&rsv_sug3=16&bs=php%20%24_server';
-    	//$host = parse_url($url);
-    	//echo $host['host'];
+
     	$where = array();
     	if (!empty($param['time_start']) && !empty($param['time_end'])){
     		$where['create_time'] = array('between', $param['time_start'].','.$param['time_end']);

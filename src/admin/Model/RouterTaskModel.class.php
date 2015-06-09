@@ -240,34 +240,5 @@ class RouterTaskModel extends Model{
        
         return $list;
     }
-    /**
-     +----------------------------------------------------------
-     * 根据路由编号及用户编号获取该路由的任务日志
-     +----------------------------------------------------------
-     * @access public
-     +----------------------------------------------------------
-     * @param $param a
-     +----------------------------------------------------------
-     * @return array
-     +----------------------------------------------------------
-    */
-    public function get_router_task_list_admin($router_id){
-        if (intval($router_id) == 0){
-            throw new Exception("路由不存在", 1);
-            return false;
-        }
-        $router = DD('Router');
-        $router_info = $router->check_router_by_id($router_id);
-        if(!$router_info){
-            throw new Exception("路由不存在", 1);
-            return false;
-        }
-
-        $list = $this->handler->where(array('router_mac'=>$router_info['router_mac'], 'mid'=>$router_info['mid']))->order('id desc')->select();
-        foreach ($list as $key => &$value) {
-            $value['router_name'] = $router_info['router_name'];
-
-        }
-        return $list;
-    }
+   
 }

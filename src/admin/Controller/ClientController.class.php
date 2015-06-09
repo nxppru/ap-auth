@@ -109,12 +109,11 @@ class ClientController extends BaseController {
      +----------------------------------------------------------
     */
     public function tick(){
-        $router_id = I('post.router_id');
         $mac = I('post.mac');
         $return_data    = array();
         try {
             $router         = D('Router');
-            $list = $router->tick($router_id, session('adminid'), $mac);
+            $list = $router->tick($mac);
             $return_data = array(
                 'ret'           => 1,
                 'msg'           => '操作成功，用户已下线',

@@ -70,33 +70,5 @@ class ClientTypeSigninLogModel extends Model{
 
     	return $list;
     }
-    /**
-     +----------------------------------------------------------
-     * 统计代理商下用户终端类型
-     +----------------------------------------------------------
-     * @access public
-     +----------------------------------------------------------
-     * @return array
-     +----------------------------------------------------------
-    */
-    public function chart_client_type_for_agency($param){
-    	//获取代理商下面的商户
-    	$merchant = DD('Merchant');
-    	$merchant_list = $merchant->get_merchant_by_parent_uid(session('adminid'));
-    	if (!$merchant_list){
-    		return false;
-    	}
-    	$mid = array();
-    	foreach ($merchant_list as $key => $value) {
-    		$mid[] = $value['mid'];
-    	}
-    	$where = array('mid'=>array('IN', implode(',', $mid)));
-    	if (!empty($param['time_start']) && !empty($param['time_end'])){
-    		$where['date'] = array('between', $param['time_start'].','.$param['time_end']);
-    	}
-    	$list = $this->handler->field('sum(Phone) as Phone, sum(computer) as computer,sum(Tablet) as Tablet')->where($where)->find();
-    
 
-    	return $list;
-    }
 }
