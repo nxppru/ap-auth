@@ -17,5 +17,5 @@ OpenWMSÊÇ¼¯¿Í¿Æ¼¼¿ª·¢µÄ»ùÓÚwifidogĞ­ÒéµÄÈÏÖ¤ÓªÏúÆ½Ì¨¡£²ÉÓÃ¿ªÔ´GPLĞí¿ÉÖ¤£¬ÈÎºÎ¸öÈ
 5.Êı¾İ¿âÅäÖÃÎÄ¼şµØÖ·Îª£ºsrc/Common/Conf/db.config
 
 6.ºóÌ¨µØÖ·ÊÇhttp://host/admin
-ÓÃ»§£ºadmin
+ÓÃ»§£ºjkdefault
 ÃÜÂë£º123456

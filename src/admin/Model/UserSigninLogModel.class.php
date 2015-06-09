@@ -41,47 +41,7 @@ class UserSigninLogModel extends Model{
           }
  		
  	}
-     
-    /**
-     +----------------------------------------------------------
-     * 获取最近10天的认证数及日期
-     +----------------------------------------------------------
-     * @access public
-     +----------------------------------------------------------
-     * @param $param a
-     +----------------------------------------------------------
-     * @return array
-     +----------------------------------------------------------
-    */
-    public function get_signlog_for_top10_all(){
-        return  $this->handler->field('SUM(user_total) as user_total, date')->group('date')->limit('0, 10')->order('date desc')->select();
-    }
-    /**
-     +----------------------------------------------------------
-     * 获取最近10天的认证数及日期--代理商
-     +----------------------------------------------------------
-     * @access public
-     +----------------------------------------------------------
-     * @param $param a
-     +----------------------------------------------------------
-     * @return array
-     +----------------------------------------------------------
-    */
-    public function get_signlog_for_top10_agency(){
-    	$merchant = DD('Merchant');
-		$merchant_list = $merchant->get_merchant_by_parent_uid(session('adminid'));
-		if (!$merchant_list){
-			return false;
-		}
-		//获取所有商家的id
-		$mid = array();
-		foreach ($merchant_list as $key => $value) {
-			$mid[] = $value['mid'];
-		}
-        $list = $this->handler->field('SUM(user_total) as user_total, date')->where(array('mid'=>array('IN', implode(',', $mid))))->group('date')->limit('0, 10')->order('date desc')->select();
-        
-        return $list;
-    }
+   
      /**
      +----------------------------------------------------------
      * 通过商家编号获取累计认证人数
@@ -99,6 +59,20 @@ class UserSigninLogModel extends Model{
                return 0;
           }
           return $sum;
+     }
+	 /**
+     +----------------------------------------------------------
+     * 通过商家编号获取最近10天的认证数及日期
+     +----------------------------------------------------------
+     * @access public
+     +----------------------------------------------------------
+     * @param $param a
+     +----------------------------------------------------------
+     * @return array
+     +----------------------------------------------------------
+    */
+     public function get_signlog_for_top10_by_mid($mid){
+          return  $this->handler->limit('0, 10')->order('date desc')->select();
      }
      /**
      +----------------------------------------------------------
