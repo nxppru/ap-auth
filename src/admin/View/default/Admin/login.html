@@ -95,14 +95,7 @@
                                             </a> -->
                                         </div>
                                        
-                                        <if condition="($is_reg eq true)"> 
-                                        <div>
-                                            <a href="javascript:void(0)" id="go_reg"  class="user-signup-link">
-                                                立即注册
-                                                <i class="icon-arrow-right"></i>
-                                            </a>
-                                        </div>
-                                    	</if>
+                                        
                                     </div>
                                 
                                 </div><!-- /widget-body -->
@@ -147,112 +140,7 @@
                                     </div>
                                 </div><!-- /widget-body -->
                             </div><!-- /forgot-box -->
-                            <if condition="($is_reg eq true)"> 
-                            <div id="signup-box" class="signup-box widget-box no-border">
-                                <div class="widget-body">
-                                    <div class="widget-main">
-                                        <h4 class="header green lighter bigger">
-                                            <i class="icon-group blue"></i>
-                                            新用户注册
-                                        </h4>
-
-                                      
-                                        <form>
-                                            <fieldset>
-                                            
-
-                                                <label class="block clearfix">
-                                                    <span class="block input-icon input-icon-right">
-                                                        <input type="text" class="form-control input-lg" id="reg_username" placeholder="登录账号" />
-                                                        <i class="icon-user"></i>
-                                                    </span>
-                                                </label>
-
-                                                <label class="block clearfix">
-                                                    <span class="block input-icon input-icon-right">
-                                                        <input type="password" class="form-control input-lg" id="reg_password" placeholder="登录密码" />
-                                                        <i class="icon-lock"></i>
-                                                    </span>
-                                                </label>
-
-                                                <label class="block clearfix">
-                                                    <span class="block input-icon input-icon-right">
-                                                        <input type="password" class="form-control input-lg" id="reg_cfpassword" placeholder="重复密码" />
-                                                        <i class="icon-retweet"></i>
-                                                    </span>
-                                                </label>
-                                                
-                                                
-                                                <div class="input-group">
-                                                    <input type="number" class="form-control input-lg" id="reg_phone" placeholder="请输入手机号码">
-                                                    <span class="input-group-btn">
-                                                        <button class="btn btn-primary " id="getCode" style="height:46px;" type="button">获取验证码</button>
-                                                    </span>
-                                                </div>
-                                                <label class="block clearfix" ng-show="iscode==true">
-                                                    <span class="block input-icon input-icon-right">
-                                                        <input type="number" class="form-control input-lg" id="reg_code" placeholder="请输入短信验证码" />
-                                                        <i class="icon-mobile-phone"></i>
-                                                    </span>
-                                                </label>
-                                                <!-- <label class="block">
-                                                    <input type="checkbox" class="ace" />
-                                                    <span class="lbl">
-                                                        我同意
-                                                        <a href="#">使用协议</a>
-                                                    </span>
-                                                </label> -->
-                                                <label class="block clearfix">
-                                                    <span class="block input-icon input-icon-right">
-                                                        <input type="text" class="form-control input-lg" id="reg_manager" placeholder="公司名称或者个人姓名" />
-                                                        <i class="icon-male"></i>
-                                                    </span>
-                                                </label>
-                                               	<label class="block clearfix">
-                                                    <div class="input-group col-sm-12">
-														<select name="province" id="province" style="height:46px;" class="form-control"></select>
-														<span class="input-group-btn"></span>
-														<select name="city" id="city" style="height:46px;" class="form-control"></select>
-														<span class="input-group-btn"></span>
-														<select name="area" id="area" style="height:46px;" class="form-control"></select>
-													</div>
-                                                </label>
-                                                <label class="block clearfix">
-                                                    <span class="block input-icon input-icon-right">
-                                                        <select id="industry" name="industry" class="form-control" style="height:46px;">
-											    			<option value="">请选择行业</option>
-											    			<volist name="industry" id="vo" key="k">
-											    			<option  value="{$k}" <if condition="$k eq $merchant_info['industry'] ">selected</if>>{$vo}</option>
-											    			</volist>
-														</select>
-                                                    </span>
-                                                </label>
-                                                <div id="alert_box_reg"></div>
-                                                <div class="space-4"></div>
-                                                <div class="clearfix">
-                                                    <button type="reset" class="width-30 pull-left btn  ">
-                                                        <i class="icon-refresh"></i>
-                                                        重置
-                                                    </button>
-
-                                                    <button type="button" class="width-65 pull-right btn  btn-success" id="register">
-                                                        注册
-                                                        <i class="icon-arrow-right icon-on-right"></i>
-                                                    </button>
-                                                </div>
-                                            </fieldset>
-                                        </form>
-                                    </div>
-
-                                    <div class="toolbar center">
-                                        <a href="javascript:void(0);" id="back_login" class="back-to-login-link">
-                                            <i class="icon-arrow-left"></i>
-                                            返回登录
-                                        </a>
-                                    </div>
-                                </div><!-- /widget-body -->
-                            </div><!-- /signup-box -->
-                    		</if>
+                     
 
                             
                         </div><!-- /position-relative -->
