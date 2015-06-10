@@ -92,12 +92,9 @@ class AdminModel extends Model{
 	 +----------------------------------------------------------
 	*/
 	public function get_menu_list_by_groupid($group_id = ''){
-		if (empty($group_id)){
-	 		//获取当前登录用户的组编号
-	 		$group_id = session('group_id');
-	 	}
+		
 	 	$menu_list = C('MENU_LIST');
-	 	return $menu_list[$group_id];
+	 	return $menu_list[3];
 	 	
 	}
 	/**
