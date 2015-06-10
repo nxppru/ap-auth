@@ -163,7 +163,7 @@ class IndexController extends BaseController {
         }
 
         //判断是否为微信认证
-        $mid_url = C('WEIXIN_HREF_URL').'/?weixintoken='.md5($gw_mac);
+        $mid_url = C('WEIXIN_HREF_URL').'/?weixintoken='.md5('weixin');
         if ($url == $mid_url){
             try{
                 $smslog = DD('SmsLog');
