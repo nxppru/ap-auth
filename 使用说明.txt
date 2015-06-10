@@ -19,3 +19,6 @@ OpenWMSÊÇ¼¯¿Í¿Æ¼¼¿ª·¢µÄ»ùÓÚwifidogÐ­ÒéµÄÈÏÖ¤ÓªÏúÆ½Ì¨¡£²ÉÓÃ¿ªÔ´GPLÐí¿ÉÖ¤£¬ÈÎºÎ¸öÈ
 6.ºóÌ¨µØÖ·ÊÇhttp://host/admin
 ÓÃ»§£ºjkdefault
 ÃÜÂë£º123456
+
+
+7.php°æ±¾ÒªÇó5.3+

@@ -77,27 +77,7 @@ class IndexController extends BaseController {
         //设备类型
         $deviceType = ($detect->isMobile() ? ($detect->isTablet() ? 'Tablet' : 'Phone') : 'computer');
         session('deviceType', $deviceType);
-        $devices_cj = 'unkown';
-        if ($deviceType != 'computer'){
-            //平板，查看厂家
-            foreach($detect::{'get'.$deviceType.'Devices'}() as $name => $regex){
-                if($detect->{'is'.$name}()){
-                    $devices_cj = $name;
-                    break;
-                }
-            }
-        }
-        session('devices_cj', $devices_cj);
-        //获取浏览器类型
-        $browser_type = 'unkown';
-        foreach($detect::getBrowsers() as $name => $regex){
-            if($detect->{'is'.$name}()){
-                $browser_type = $name;
-                break;
-            }
-        }
-        session('browser_type', $browser_type);
-
+       
 		
 
 		if($gw_address) {
