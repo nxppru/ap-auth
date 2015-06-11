@@ -1,8 +1,6 @@
 'use strict';
 jQuery(function($) {
-	if ($('#is_reg').val() == 1){
-		new PCAS("province","city","area");
-	}
+	
 	
     var app = $('#app').val();
  	$('#go_reg').click(function(){
