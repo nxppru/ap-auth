@@ -17,8 +17,7 @@ OpenWMSÊÇ¼¯¿Í¿Æ¼¼¿ª·¢µÄ»ùÓÚwifidogÐ­ÒéµÄÈÏÖ¤ÓªÏúÆ½Ì¨¡£²ÉÓÃ¿ªÔ´GPLÐí¿ÉÖ¤£¬ÈÎºÎ¸öÈ
 5.Êý¾Ý¿âÅäÖÃÎÄ¼þµØÖ·Îª£ºsrc/Common/Conf/db.config
 
 6.ºóÌ¨µØÖ·ÊÇhttp://host/admin
-ÓÃ»§£ºjkdefault
-ÃÜÂë£º123456
+
 
 
 7.php°æ±¾ÒªÇó5.3+
@@ -27,8 +26,4 @@ OpenWMSÊÇ¼¯¿Í¿Æ¼¼¿ª·¢µÄ»ùÓÚwifidogÐ­ÒéµÄÈÏÖ¤ÓªÏúÆ½Ì¨¡£²ÉÓÃ¿ªÔ´GPLÐí¿ÉÖ¤£¬ÈÎºÎ¸öÈ
    	1.ÏÂÔØÒ»¸öwamp°ü£¬°²×°µ½DÅÌ
 	2.½²ÎÄ¼þ½âÑ¹µ½wwwÄ¿Â¼ÖÐ
 	3.°²×°redis·þÎñ
-	4.½¨Á¢Êý¾Ý¿âopenWMs
-	5.½«openWMS.sqlµ¼Èëµ½Êý¾Ý¿âÖÐ¡£
-	6.ÐÞ¸ÄÊý¾Ý¿âÅäÖÃÎÄ¼þ src/Common/Conf/db.php
-	7.ÔËÐÐhttp://127.0.0.1/admin
-	8.ÊäÈëÕËºÅjkdefault£¬ÃÜÂë£º123456
+	4.ÔËÐÐhttp://127.0.0.1/ÄúµÄ×ÓÄ¿Â¼£¬Ã»ÓÐ¿ÉÒÔÈ¥³ý/install/
