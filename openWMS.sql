@@ -108,40 +108,21 @@ insert  into `jk_client_type_signinlog`(`id`,`Phone`,`computer`,`Tablet`,`date`)
 DROP TABLE IF EXISTS `jk_fullsigninlog`;
 
 CREATE TABLE `jk_fullsigninlog` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `user_id` int(11) NOT NULL,
-  `username` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
-  `third_id` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
-  `auth_type` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
-  `dateline` datetime NOT NULL,
-  `online_time` int(11) DEFAULT NULL COMMENT '在线时长',
-  `incoming` int(11) DEFAULT '0',
-  `outgoing` int(11) DEFAULT '0',
-  `browser_type` varchar(50) COLLATE utf8_unicode_ci DEFAULT '' COMMENT '浏览器类型',
-  `src_url` varchar(100) COLLATE utf8_unicode_ci DEFAULT '' COMMENT '来路地址',
-  `client_ip` varchar(50) COLLATE utf8_unicode_ci DEFAULT '',
-  `client_token` varchar(50) COLLATE utf8_unicode_ci DEFAULT '' COMMENT '唯一码，用于反查',
-  PRIMARY KEY (`id`,`dateline`),
-  KEY `dateline` (`dateline`),
-  KEY `online_time` (`online_time`),
-  KEY `auth_type` (`auth_type`)
-) ENGINE=MyISAM AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci
-/*!50100 PARTITION BY RANGE (to_days(dateline))
-(PARTITION p1012 VALUES LESS THAN (735964) ENGINE = MyISAM,
- PARTITION p1101 VALUES LESS THAN (735995) ENGINE = MyISAM,
- PARTITION p1102 VALUES LESS THAN (736023) ENGINE = MyISAM,
- PARTITION p1103 VALUES LESS THAN (736054) ENGINE = MyISAM,
- PARTITION p1104 VALUES LESS THAN (736084) ENGINE = MyISAM,
- PARTITION p1105 VALUES LESS THAN (736115) ENGINE = MyISAM,
- PARTITION p1106 VALUES LESS THAN (736145) ENGINE = MyISAM,
- PARTITION p1107 VALUES LESS THAN (736176) ENGINE = MyISAM,
- PARTITION p1108 VALUES LESS THAN (736207) ENGINE = MyISAM,
- PARTITION p1109 VALUES LESS THAN (736237) ENGINE = MyISAM,
- PARTITION p11010 VALUES LESS THAN (736268) ENGINE = MyISAM,
- PARTITION p11011 VALUES LESS THAN (736298) ENGINE = MyISAM,
- PARTITION p11012 VALUES LESS THAN (736329) ENGINE = MyISAM,
- PARTITION p11013 VALUES LESS THAN MAXVALUE ENGINE = MyISAM) */;
-
+   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+   `user_id` int(11) NOT NULL,
+   `username` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+   `third_id` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+   `auth_type` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+   `dateline` datetime NOT NULL,
+   `online_time` int(11) DEFAULT NULL COMMENT '在线时长',
+   `router_mac` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
+   `incoming` int(11) DEFAULT '0',
+   `outgoing` int(11) DEFAULT '0',
+   `browser_type` varchar(50) COLLATE utf8_unicode_ci DEFAULT '' COMMENT '浏览器类型',
+   `src_url` varchar(100) COLLATE utf8_unicode_ci DEFAULT '' COMMENT '来路地址',
+   `client_ip` varchar(50) COLLATE utf8_unicode_ci DEFAULT '',
+   PRIMARY KEY (`id`)
+ ) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*Data for the table `jk_fullsigninlog` */
 
 insert  into `jk_fullsigninlog`(`id`,`user_id`,`username`,`third_id`,`auth_type`,`dateline`,`online_time`,`incoming`,`outgoing`,`browser_type`,`src_url`,`client_ip`,`client_token`) values (1,1,'61a1c4ba25076b786c2d27574171d322','61a1c4ba25076b786c2d27574171d322','akey_verify','2015-06-04 12:02:19',0,392,221,'Chrome','baidu.com','192.168.8.153','b3107efd3417f96622a07f33b9e3b74d'),(2,1,'61a1c4ba25076b786c2d27574171d322','61a1c4ba25076b786c2d27574171d322','akey_verify','2015-06-09 10:29:51',398,2615,1125,'Chrome','www.163.com','192.168.8.153','cbd0e58056c853b0364b9cc2bc142c7b'),(3,1,'61a1c4ba25076b786c2d27574171d322','61a1c4ba25076b786c2d27574171d322','akey_verify','2015-06-09 10:36:47',640,660,710,'Chrome','3g.163.com','192.168.8.153','83cf95b8b80e1c44d1a170063d5342d6'),(4,1,'61a1c4ba25076b786c2d27574171d322','61a1c4ba25076b786c2d27574171d322','akey_verify','2015-06-09 10:47:41',574,949,945,'Chrome','www.163.com','192.168.8.153','61b980eef7d9a10d41cc531103338d9b'),(5,1,'61a1c4ba25076b786c2d27574171d322','61a1c4ba25076b786c2d27574171d322','akey_verify','2015-06-09 10:59:30',1147,26265,1243,'Chrome','www.163.com','192.168.8.153','0f272911cf22c9e5c6a6c57c4cc69bec'),(6,1,'61a1c4ba25076b786c2d27574171d322','61a1c4ba25076b786c2d27574171d322','akey_verify','2015-06-09 11:21:58',532,1216,860,'Chrome','www.163.com','192.168.8.153','b9db5c5ae88ed4c4781c74403d60f4dc'),(7,1,'61a1c4ba25076b786c2d27574171d322','61a1c4ba25076b786c2d27574171d322','akey_verify','2015-06-09 11:32:42',4706,22197,7864,'Chrome','www.163.com','192.168.8.153','5bea58aac9d611708f6ce79e0783ef03');

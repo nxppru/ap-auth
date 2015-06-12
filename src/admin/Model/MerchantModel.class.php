@@ -279,7 +279,7 @@ class MerchantModel extends Model{
 			file_put_contents($config_file, "<?php \nreturn " . var_export($config, true) . ";", LOCK_EX);
 			@unlink(RUNTIME_FILE);
 			return true;
-		} else {
+		} else { 
 			return false;
 		}
 	}
