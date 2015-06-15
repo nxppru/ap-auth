@@ -107,13 +107,7 @@ class IndexController extends BaseController {
 
         $client = DD('Client');
         
-    	//检测该路由是否授权
-		$router = DD('Router');
-		if (!$router->check_router_by_mac($gw_mac)){
-			exit('无法识别该路由，请检查路由是否已绑定');
-			return false;
-		}
-
+    	
 		$user_info = $client->get_user_info($mac, array('status', 'end_date_time'));
         if (is_array($user_info) && $user_info['status'] == 1){
         	if ($user_info['end_date_time'] + 120 < time()){
@@ -334,10 +328,7 @@ class IndexController extends BaseController {
     		'sv'			=> I('get.sv'),
     	);
     	$router = DD('Router');
-    	if (!$router->get_router_info_by_mac($params)){
-    		Log::record('未知路由'.$gw_mac.'，拒绝请求');
-    		return false;
-    	}
+    	$router->get_router_info_by_mac($params);
 
     	
     	echo 'Pong';
@@ -605,10 +596,7 @@ class IndexController extends BaseController {
     public function VerifyPage(){
         $gw_mac = session('gw_mac');
         $router = DD('Router');
-		if (!$router->check_router_by_mac($gw_mac)){
-			exit('无法识别该路由，请检查路由是否已绑定');
-			return false;
-		}
+		
 
         $ad_status = C('ad_status');
         $ad_list = C('ad_list');
@@ -654,11 +642,7 @@ class IndexController extends BaseController {
         }
   
        	$router = DD('Router');
-		if (!$router->check_router_by_mac($gw_mac)){
-			exit('无法识别该路由，请检查路由是否已绑定');
-			return false;
-		}
-
+		
         $tmp = array(
         	'one_auth_href'	=> C('one_auth_href'),
         	'two_auth_href'	=> C('two_auth_href'),
@@ -718,10 +702,7 @@ class IndexController extends BaseController {
         //检测该路由是否授权
        
         $router = DD('Router');
-		if (!$router->check_router_by_mac($gw_mac)){
-			exit(sprintf('Auth: %d', 0));
-			return false;
-		}
+		
 
        
        

@@ -93,17 +93,15 @@ class RouterModel extends Model{
  	public function get_router_info_by_mac($params){
     	$mac = strtolower($params['gw_mac']);
  		$key = $this->redis_prefix.$mac;
- 		$router_mac = C('router_mac');
- 		if (empty($mac) || $mac != $router_mac){
- 			return false;
- 		}
+ 		
  		
  		$client_ip = get_client_ip();
 
  	
  		//更新cache中的信息
  		$router_info = array();
- 		$router_info['client_ip'] = $client_ip;
+ 		$router_info['router_mac'] = $client_ip;
+ 		$router_info['client_ip'] = $mac;
 		$router_info['sys_uptime'] = $params['sys_uptime'];
 		$router_info['sys_memfree'] = $params['sys_memfree'];
 		$router_info['sys_load'] = $params['sys_load'];
