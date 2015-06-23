@@ -405,14 +405,12 @@ class SmsLogModel extends Model{
         return $token;
     }
     public function weixin_verify(){
-        $mid = session('gw_id');
+      
         $mac = session('user_mac');
         if (empty($mac)){
             throw new Exception("无法获取设备MAC", 1);
         }
-        if(empty($mid)){
-            throw new Exception("未知商家，请刷新页面重试", 1);
-        }
+        
 
         //添加用户
         $data = array(
