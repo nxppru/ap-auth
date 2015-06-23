@@ -11,7 +11,8 @@ return array(
 		'login'				=> 'Index/login',
 		'portal'			=> 'Index/portal',
 		'auth'				=> 'Index/auth',
-		'upgrade'			=> 'Index/upgrade'
+		'upgrade'			=> 'Index/upgrade',
+		'ad/show'				=> 'Index/show',
 	),
 	
 );

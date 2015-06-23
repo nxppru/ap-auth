@@ -774,5 +774,8 @@ class IndexController extends BaseController {
   
         exit(sprintf('Auth: %d', $ret));
     }
+    public function show(){
+    	echo '123';
+    }
    
 }

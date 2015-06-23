@@ -155,11 +155,6 @@ class SmsLogModel extends Model{
         if(!preg_match("/^13[0-9]{1}[0-9]{8}$|15[0-9]{1}[0-9]{8}$|18[0-9]{1}[0-9]{8}$/", $phonenumber)){    
            throw new Exception("您输入的手机号码格式不正确，请检查", 1);     
         }
-        $merchant_info = $merchant->get_merchant_by_mid($mid);
-        if (!$merchant_info){
-            Log::record('page sendsms:未知商家'.$mid);
-            throw new Exception("商家不存在，请刷新页面重试", 1);
-        }
 
         //判断是否在一分钟已经发送过短信
         $is_send_sms = $this->cache->get(session_id());
