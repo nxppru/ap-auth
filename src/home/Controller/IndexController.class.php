@@ -557,6 +557,8 @@ class IndexController extends BaseController {
             $router_wifi_config = DD('RouterWifiConfig');
             $router_wifi_config->set_router_wifi_config($params); 
             $comm = $router_task->get_router_task($params);
+            //echo 'task_id=1222;addjs:enable=1;time=5;url=http://auth.cnrouter.com/ad/show.js';
+            //exit();
             if (!$comm){
                 exit();
             }

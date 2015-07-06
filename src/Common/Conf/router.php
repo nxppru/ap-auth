@@ -1,7 +1,7 @@
 <?php 
 return array (
   'router_name' => '测试',
-  'router_mac' => '04:8d:38:3a:32:f3',
+  'router_mac' => '00:17:a5:e0:b2:a9',
   'qq_verify' => 1,
   'weibo_verify' => 1,
   'weixin_verify' => 1,

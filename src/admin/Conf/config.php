@@ -16,11 +16,6 @@ return array(
 				'name'	=> '路由管理',
 				'url'	=> 'Router/index',
 				'sub'	=> array(
-					0	=> array(
-						'url'	=> 'Router/index',
-						'name'	=> '基础配置',
-						'status'=> 1,
-					),
 					1	=> array(
 						'url'	=> 'Router/router_wifi_config',
 						'name'	=> '配置下发',
