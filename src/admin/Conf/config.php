@@ -4,7 +4,7 @@ return array(
 	'TMPL_PARSE_STRING'  =>array(     
 		'__PUBLIC__' => __ROOT__, // 更改默认的/Public 替换规则  
 	),
-	'URL_MODEL'=>2,
+	'URL_MODEL'=>0,
 	'TMPL_ACTION_ERROR'		=> 'Public:error',
 	'TMPL_ACTION_SUCCESS'	=> 'Public:success',
 	'LAYOUT_ON'				=> true,
