@@ -24,7 +24,7 @@ jQuery(function($) {
    
         $(this).button('loading');
         $.ajax({ 
-            url: app+'/Admin/check',  
+            url: app+'?m=admin&c=Admin&a=check',  
             data:{'username': login_username, 'passwd': hex_md5(hex_md5(login_password))},
             dataType:'json',
             type:'POST',
